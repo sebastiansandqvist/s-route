@@ -1,24 +1,40 @@
+// Notes:
+// - Does not handle nested objects
+// - Does not handle arrays of form a[0]=foo&a[1]=bar
+// 		Only arrays of this form are handled: a=foo&a=bar
+// --- may drop this non-standard behavior ^
+
 function parseQueryString(string) {
-
-
-	if (!string) {
-		return {};
-	}
 
 	if (string[0] === '?') {
 		string = string.slice(1);
 	}
 
+	if (!string) {
+		return {};
+	}
+
 	const result = {};
 	const entries = string.split('&');
 
-	for (let i = 0; i < entries.length; i++) {
-		const split = entries[i].split('=');
-		result[decodeURIComponent(split[0])] = decodeURIComponent(split[1]);
-	}
+	entries.forEach(function(entry) {
+		const split = entry.split('=');
+		let key = decodeURIComponent(split[0]);
+		const value = decodeURIComponent(split[1]);
+
+		// if key is in array form `foo[]`, then convert it to `foo`
+		if (key[key.length - 1] === ']' && key[key.length - 2] === '[') {
+			key = key.slice(0, -2);
+		}
+
+		// if there is already a value in result[key],
+		// convert to array: 'a=foo&a=bar' => { a: ['foo', 'bar'] }
+		result[key] = result[key] === undefined ? value : [result[key]].concat(value);
+
+	});
 
 	return result;
 
 }
 
-export default parseQueryString;
+module.exports = parseQueryString;
