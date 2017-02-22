@@ -55,4 +55,14 @@ describe('querystring', function() {
 		expect(data).to.deep.equal({ a: ['foo', 'bar'] });
 	});
 
+	it('forces single element array if brackets are present', function() {
+		const data = querystring('a[]=foo');
+		expect(data).to.deep.equal({ a: ['foo'] });
+	});
+
+	it('forces single element array if escaped brackets are present', function() {
+		const data = querystring('a%5B%5D=foo');
+		expect(data).to.deep.equal({ a: ['foo'] });
+	});
+
 });
