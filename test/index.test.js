@@ -152,6 +152,12 @@ describe('index', function() {
 
 		it('works', function() {
 			expect(getParams(['foo', ':bar'], ['foo', '12'])).to.deep.equal({ bar: '12' });
+			expect(
+				getParams(
+					['foo', ':bar', ':baz'],
+					['foo', '12', 'test']
+				)
+			).to.deep.equal({ bar: '12', 'baz': 'test' });
 		});
 
 	});

@@ -98,19 +98,12 @@ export function matchRoute(url, routeTable) {
  * NOTE: assumes routeSegments is a match for given url
  */
 export function getParams(routeSegments, urlSegments) {
-
-}
-
-/*
-// schema is array of segments from routeTable with '/:foo'
-// matchedUrl is array of segments from actual addressbar url
-function getParams(schema, matchedUrl) {
 	const params = {};
-	for (let i = 0; i < schema.length; i++) {
-		if (schema[i][0] === ':') {
-			params[schema[i].slice(1)] = matchedUrl[i];
+	for (let i = 0; i < routeSegments.length; i++) {
+		if (routeSegments[i][0] === ':') {
+			params[routeSegments[i].slice(1)] = urlSegments[i];
 		}
 	}
 	return params;
 }
-*/
+
