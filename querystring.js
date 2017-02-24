@@ -1,8 +1,11 @@
 // Notes:
 // - Does not handle nested objects
 // - Does not handle arrays of form a[0]=foo&a[1]=bar
-// 		Only arrays of this form are handled: a=foo&a=bar
-// --- may drop this non-standard behavior ^
+
+// Accepts arrays of the following forms:
+// a=foo&a=bar
+// a[]=foo&a[]=bar
+// both become: { a: ['foo', 'bar'] }
 
 function parseQueryString(string) {
 
@@ -44,4 +47,4 @@ function parseQueryString(string) {
 
 }
 
-module.exports = parseQueryString;
+export default parseQueryString;

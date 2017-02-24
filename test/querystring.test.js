@@ -1,7 +1,5 @@
-'use strict';
-
-const expect = require('chai').expect;
-const querystring = require('../querystring.js');
+import { expect } from 'chai';
+import querystring from '../querystring.js';
 
 describe('querystring', function() {
 
