@@ -91,6 +91,17 @@ export function matchRoute(url, routeTable) {
 }
 
 /*
+ * `routeSegments` comes from schema, eg: ['foo', ':bar', ':baz']
+ * `urlSegments` comes from address bar, eg: ['foo', '12', 'test']
+ * returns url params object, eg: { bar: '12', baz: 'test' }
+ *
+ * NOTE: assumes routeSegments is a match for given url
+ */
+export function getParams(routeSegments, urlSegments) {
+
+}
+
+/*
 // schema is array of segments from routeTable with '/:foo'
 // matchedUrl is array of segments from actual addressbar url
 function getParams(schema, matchedUrl) {
@@ -102,4 +113,4 @@ function getParams(schema, matchedUrl) {
 	}
 	return params;
 }
- */
+*/

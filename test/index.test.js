@@ -5,7 +5,8 @@ import {
 	indexOfOrLength,
 	cleanseRoute,
 	isMatch,
-	matchRoute
+	matchRoute,
+	getParams
 } from '../index.js';
 
 describe('index', function() {
@@ -143,6 +144,14 @@ describe('index', function() {
 		it('returns catch-all if no url matches route', function() {
 			expect(matchRoute('/test', routeTable)).to.equal('*');
 			expect(matchRoute('/foo/bar/baz/test', routeTable)).to.equal('*');
+		});
+
+	});
+
+	describe('getParams', function() {
+
+		it('works', function() {
+			expect(getParams(['foo', ':bar'], ['foo', '12'])).to.deep.equal({ bar: '12' });
 		});
 
 	});
