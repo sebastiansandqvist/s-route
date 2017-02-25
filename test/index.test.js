@@ -1,15 +1,127 @@
 import { expect } from 'chai';
-import {
+import Router, {
 	splitRoute,
 	generateRouteTable,
 	indexOfOrLength,
 	cleanseRoute,
 	isMatch,
 	matchRoute,
-	getParams
+	getParams,
+	setPath
 } from '../index.js';
 
+function generateWindowMock(pathname = '/', hash = '', search = '') {
+	const mock = {
+		location: {
+			pathname,
+			hash,
+			search
+		},
+		history: {
+			pushState(state, title, path) {
+				const hashIndex = path.indexOf('#');
+				const pathIndex = path.indexOf('?');
+				mock.location.pathname = cleanseRoute(path);
+				mock.location.hash = path.slice(hashIndex > 0 ? hashIndex : path.length, path.length);
+				mock.location.search =
+					path.slice(
+						pathIndex > 0 ? pathIndex : path.length,
+						(hashIndex > pathIndex && pathIndex > 0) ? hashIndex : path.length
+					);
+			},
+			replaceState(state, title, path) {
+				mock.history.pushState(state, title, path);
+			}
+		}
+	};
+	return mock;
+}
+
 describe('index', function() {
+
+	describe('Router', function() {
+
+		it('works', function() {
+			return new Promise(function(resolve) {
+				const $window = generateWindowMock('/foo/12');
+				const routes = {
+					'/foo/:bar': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/foo/12');
+						expect(hash).to.equal('');
+						expect(search).to.equal('');
+						expect(route).to.equal('/foo/:bar');
+						expect(params).to.deep.equal({ bar: '12' });
+						resolve();
+					},
+					'*': function() {
+						throw new Error('Catch-all should not be triggered');
+					}
+				};
+				Router(routes, $window);
+			});
+		});
+
+		it('matches root route', function() {
+			return new Promise(function(resolve) {
+				const $window = generateWindowMock();
+				const routes = {
+					'/': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/');
+						expect(hash).to.equal('');
+						expect(search).to.equal('');
+						expect(route).to.equal('/');
+						expect(params).to.deep.equal({});
+						resolve();
+					},
+					'*': function() {
+						throw new Error('Catch-all should not be triggered');
+					}
+				};
+				Router(routes, $window);
+			});
+		});
+
+		it('routes to catch-all when not matched', function() {
+			return new Promise(function(resolve) {
+				const $window = generateWindowMock();
+				const routes = {
+					'/foo': function() {
+						throw new Error('Route should not be triggered');
+					},
+					'*': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/');
+						expect(hash).to.equal('');
+						expect(search).to.equal('');
+						expect(route).to.equal('*');
+						expect(params).to.deep.equal({});
+						resolve();
+					}
+				};
+				Router(routes, $window);
+			});
+		});
+
+		it('detects hash and search', function() {
+			return new Promise(function(resolve) {
+				const $window = generateWindowMock('/foo/12', '#testing', '?foo=bar');
+				const routes = {
+					'/foo/:bar': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/foo/12');
+						expect(hash).to.equal('#testing');
+						expect(search).to.equal('?foo=bar');
+						expect(route).to.equal('/foo/:bar');
+						expect(params).to.deep.equal({ bar: '12' });
+						resolve();
+					},
+					'*': function() {
+						throw new Error('Catch-all should not be triggered');
+					}
+				};
+				Router(routes, $window);
+			});
+		});
+
+	});
 
 	describe('splitRoute', function() {
 
@@ -158,6 +270,48 @@ describe('index', function() {
 					['foo', '12', 'test']
 				)
 			).to.deep.equal({ bar: '12', 'baz': 'test' });
+		});
+
+	});
+
+	describe('setPath', function() {
+
+		it('resolves route on router init then sets route', function() {
+			return new Promise(function(resolve) {
+				const $window = generateWindowMock();
+				let calledRoot = false;
+				let calledFooBar = false;
+				const routes = {
+					'/': function() {
+						calledRoot = true;
+					},
+					'/foo/:bar': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/foo/12');
+						expect(hash).to.equal('');
+						expect(search).to.equal('');
+						expect(route).to.equal('/foo/:bar');
+						expect(params).to.deep.equal({ bar: '12' });
+						expect(calledRoot).to.equal(true); // called root on router init
+						calledFooBar = true;
+					},
+					'/test': function({ path, hash, search, route, params }) {
+						expect(path).to.equal('/test');
+						expect(hash).to.equal('#test');
+						expect(search).to.equal('?foo=bar');
+						expect(route).to.equal('/test');
+						expect(params).to.deep.equal({});
+						expect(calledRoot).to.equal(true); // called root on router init
+						expect(calledFooBar).to.equal(true); // called foo/:bar in first setPath
+						resolve();
+					},
+					'*': function() {
+						throw new Error('Catch-all should not be triggered');
+					}
+				};
+				Router(routes, $window);
+				setPath('/foo/12', {}, $window);
+				setPath('/test?foo=bar#test', {}, $window);
+			});
 		});
 
 	});
