@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>s-router test</title>
+		<script src="/js/app.bundle.js"></script>
+		<style>
+			p { margin: 0; }
+			ol { font-family: monospace; font-size: 10px; }
+			li { background: #f5f5f5; margin-bottom: 20px; }
+			strong {
+				display: inline-block;
+				width: 100px;
+				text-transform: uppercase;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>Normal routing</h3>
+		<input type="button" value="/"/>
+		<input type="button" value="/foo"/>
+		<input type="button" value="/foo/123"/>
+		<input type="button" value="/foo/456"/>
+		<input type="button" value="/foo/123/baz"/>
+		<input type="button" value="/foo/test/123/qux"/>
+		<h3>Routes with hash/query</h3>
+		<input type="button" value="/foo/123#hashtest"/>
+		<input type="button" value="/foo/123?query=test"/>
+		<input type="button" value="/foo/123?query=test#456"/>
+		<h3>Routes with no match</h3>
+		<input type="button" value="/404"/>
+		<input type="button" value="/other404"/>
+		<h3>Log</h3>
+		<ol id="log"></ol>
+	</body>
+</html>
