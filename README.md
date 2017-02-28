@@ -7,7 +7,7 @@ For use with single-page applications
 ### Example
 
 ```js
-import Router, { setPath } from 's-router';
+import { Router, setPath } from 's-router';
 import parseQueryString from 's-router/querystring';
 
 function rootRouted() {
@@ -54,12 +54,13 @@ Using a module bundler such as [rollup](http://rollupjs.org), [webpack](https://
 
 ```js
 // if using an es6 transpiler, like babel or buble
-import Router from 's-router';
+import { Router } from 's-router';
 ```
 
 ```js
 // if not using an es6 transpiler, use the already-transpiled UMD version instead
-var Router = require('s-router/bundle');
+var Router = require('s-router/bundle').Router;
+var setPath = require('s-router/bundle').setPath;
 ```
 
 A server-side setup that routes all traffic to the same html file will also be required.
@@ -227,4 +228,4 @@ The following nonstandard features are *not* supported:
 
 The router relies on the [history API](https://developer.mozilla.org/en-US/docs/Web/API/History) which is supported in Internet Explorer versions 10 and above.
 
-The code for the router is written in es6. A transpiled version is available in `s-router/bundle`. For developers using a transpiler anyway (or writing code for es6-ready browsers only), you need only import `s-router`.
+The code for the router is written in es6. A transpiled version is available in `s-router/bundle`. For developers using a transpiler anyway (or writing code for es6-ready browsers only), you need only import from `s-router`.

@@ -1,4 +1,4 @@
-import Router, { setPath } from '../../../index.js';
+import { Router, setPath } from '../../../index.js';
 
 function createLabeledParagraph(label, text) {
 	const p = document.createElement('p');

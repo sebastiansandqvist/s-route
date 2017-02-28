@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import Router, {
+import {
+	Router,
 	splitRoute,
 	generateRouteTable,
 	indexOfOrLength,

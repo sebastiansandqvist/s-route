@@ -1,11 +1,17 @@
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global['s-router'] = global['s-router'] || {})));
+}(this, (function (exports) { 'use strict';
+
 // NOTE: relies on history API (IE >= 10)
 
 
 /*
  * turns '/foo/:bar/baz' into ['foo', ':bar', 'baz']
  */
-export function splitRoute(string) {
-	return string.split('/').filter((x) => Boolean(x));
+function splitRoute(string) {
+	return string.split('/').filter(function (x) { return Boolean(x); });
 }
 
 
@@ -15,15 +21,15 @@ export function splitRoute(string) {
  * returns output like this:
  * 	{ '/': [], '/foo': ['foo'], '/foo/:bar': ['foo', ':bar'], '*': ['*'] }
  */
-export function generateRouteTable(routeMap) {
+function generateRouteTable(routeMap) {
 
 	if (routeMap['*'] === undefined) {
 		throw new Error('s-router requires catch-all * route');
 	}
 
-	const table = {};
+	var table = {};
 
-	for (const route in routeMap) {
+	for (var route in routeMap) {
 		if (routeMap.hasOwnProperty(route)) {
 			table[route] = splitRoute(route);
 		}
@@ -37,8 +43,8 @@ export function generateRouteTable(routeMap) {
 /*
  * used to simplify cleanseRoute
  */
-export function indexOfOrLength(string, substr) {
-	const index = string.indexOf(substr);
+function indexOfOrLength(string, substr) {
+	var index = string.indexOf(substr);
 	return index > -1 ? index : string.length;
 }
 
@@ -47,8 +53,8 @@ export function indexOfOrLength(string, substr) {
  * turns /foo/bar#baz into /foo/bar
  * turns /foo?bar=baz into /foo
  */
-export function cleanseRoute(string) {
-	const index = Math.min(indexOfOrLength(string, '#'), indexOfOrLength(string, '?'));
+function cleanseRoute(string) {
+	var index = Math.min(indexOfOrLength(string, '#'), indexOfOrLength(string, '?'));
 	return string.slice(0, index);
 }
 
@@ -58,14 +64,14 @@ export function cleanseRoute(string) {
  * `urlSegments` comes from address bar, eg: ['foo', '12', 'test']
  * returns true if routeSegments are compatible with urlSegments
  */
-export function isMatch(routeSegments, urlSegments) {
+function isMatch(routeSegments, urlSegments) {
 
 	if (routeSegments.length !== urlSegments.length) {
 		return false;
 	}
 
-	let matched = true;
-	for (let i = 0; i < routeSegments.length; i++) {
+	var matched = true;
+	for (var i = 0; i < routeSegments.length; i++) {
 		if (routeSegments[i] === urlSegments[i]) { continue; }
 		if (routeSegments[i][0] === ':') { continue; }
 		matched = false;
@@ -83,9 +89,9 @@ export function isMatch(routeSegments, urlSegments) {
  * 	{ '/foo/:bar': ['foo', ':bar'], '*': ['*'] }
  * ) === '/foo/:bar'
  */
-export function matchRoute(url, routeTable) {
-	const segments = splitRoute(cleanseRoute(url)); // is cleanseRoute not needed because location.pathname strips hash and search?
-	for (const route in routeTable) {
+function matchRoute(url, routeTable) {
+	var segments = splitRoute(cleanseRoute(url)); // is cleanseRoute not needed because location.pathname strips hash and search?
+	for (var route in routeTable) {
 		if (isMatch(routeTable[route], segments)) {
 			return route;
 		}
@@ -103,9 +109,9 @@ export function matchRoute(url, routeTable) {
  * 				then loop ends. Critical to loop over routeSegments.length and not
  * 				urlSegments.length for this reason.
  */
-export function getParams(routeSegments, urlSegments) {
-	const params = {};
-	for (let i = 0; i < routeSegments.length; i++) {
+function getParams(routeSegments, urlSegments) {
+	var params = {};
+	for (var i = 0; i < routeSegments.length; i++) {
 		if (routeSegments[i][0] === ':') {
 			params[routeSegments[i].slice(1)] = urlSegments[i];
 		}
@@ -121,17 +127,19 @@ export function getParams(routeSegments, urlSegments) {
  * sets up resolveRoute function to be used onpopstate and
  * when `setPath` is called.
  */
-export function Router(routeMap, $window = window) {
+function Router(routeMap, $window) {
+	if ( $window === void 0 ) $window = window;
 
-	const routeTable = generateRouteTable(routeMap);
+
+	var routeTable = generateRouteTable(routeMap);
 
 	Router.resolveRoute = function() {
 
-		const currentPath = $window.location.pathname;
-		const currentHash = $window.location.hash;
-		const currentSearch = $window.location.search;
+		var currentPath = $window.location.pathname;
+		var currentHash = $window.location.hash;
+		var currentSearch = $window.location.search;
 
-		const match = matchRoute(currentPath, routeTable);
+		var match = matchRoute(currentPath, routeTable);
 		routeMap[match]({
 			path: currentPath,
 			hash: currentHash,
@@ -152,10 +160,13 @@ export function Router(routeMap, $window = window) {
  *
  * `path` to set can include hash and search
  */
-export function setPath(path, options = {}, $window = window) {
+function setPath(path, options, $window) {
+	if ( options === void 0 ) options = {};
+	if ( $window === void 0 ) $window = window;
 
-	const state = options ? options.state : null;
-	const title = options ? options.title : '';
+
+	var state = options ? options.state : null;
+	var title = options ? options.title : '';
 
 	if (options.replaceState) { $window.history.replaceState(state, title, path); }
 	else { $window.history.pushState(state, title, path); }
@@ -167,3 +178,16 @@ export function setPath(path, options = {}, $window = window) {
 
 }
 
+exports.splitRoute = splitRoute;
+exports.generateRouteTable = generateRouteTable;
+exports.indexOfOrLength = indexOfOrLength;
+exports.cleanseRoute = cleanseRoute;
+exports.isMatch = isMatch;
+exports.matchRoute = matchRoute;
+exports.getParams = getParams;
+exports.Router = Router;
+exports.setPath = setPath;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));

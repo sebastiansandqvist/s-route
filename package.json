@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "bundletest": "rollup -c ./rollup.config.js",
+    "bundle": "rollup -c ./rollup.config.js",
+    "bundletest": "rollup -c ./rollup-test.config.js",
     "starttest": "firebase serve --port 3000",
     "test": "mocha --compilers js:babel-core/register"
   },
