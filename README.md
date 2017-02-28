@@ -1,8 +1,7 @@
 # s-router
 
-A client-side router that calls functions when a matching route is hit
-
-For use with single-page applications
+- A client-side router that calls functions when a matching route is hit
+- For use with single-page applications
 
 ### Example
 
