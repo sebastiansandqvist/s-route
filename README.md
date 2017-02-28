@@ -234,3 +234,16 @@ The code for the router is written in es6. A transpiled version is available in 
 A basic demo that allows you to set the route through `setPath` displays a running log of the route data available to route handlers.
 
 [Try it out here](https://fir-router-demo.firebaseapp.com).
+
+For reference, its router is defined as follows:
+
+```js
+Router({
+	'/': log,
+	'/foo': log,
+	'/foo/:bar': log,
+	'/foo/:bar/baz': log,
+	'/foo/:bar/:baz/qux': log,
+	'*': log
+});
+```
