@@ -24,7 +24,11 @@ function parseQueryString(string) {
 
 		const split = entry.split('=');
 		let key = decodeURIComponent(split[0]);
-		const value = decodeURIComponent(split[1]);
+		let value = decodeURIComponent(split[1]);
+
+		// TODO: add test
+		if (value === 'true') { value = true; }
+		else if (value === 'false') { value = false; }
 
 		// if key is in array form `foo[]`, then convert it to `foo`
 		// and force it to be an array

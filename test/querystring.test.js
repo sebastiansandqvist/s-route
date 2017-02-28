@@ -63,4 +63,19 @@ describe('querystring', function() {
 		expect(data).to.deep.equal({ a: ['foo'] });
 	});
 
+	it('casts to boolean', function() {
+		const data = querystring('?a=true&b=false');
+		expect(data).to.deep.equal({ a: true, b: false });
+	});
+
+	it('casts to boolean in arrays', function() {
+		const data = querystring('?a=true&a=false');
+		expect(data).to.deep.equal({ a: [true, false] });
+	});
+
+	it('does not cast numbers', function() {
+		const data = querystring('?a=123');
+		expect(data).to.deep.equal({ a: '123' });
+	});
+
 });
