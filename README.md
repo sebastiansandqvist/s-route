@@ -1,4 +1,4 @@
-# s-router
+# s-route
 
 - A client-side router that calls functions when a matching route is hit
 - For use with single-page applications
@@ -6,8 +6,8 @@
 ### Example
 
 ```js
-import { Router, setPath } from 's-router';
-import parseQueryString from 's-router/querystring';
+import { Router, setPath } from 's-route';
+import parseQueryString from 's-route/querystring';
 
 function rootRouted() {
 	// do something to show root page content
@@ -46,20 +46,20 @@ setPath('/messages/123?foo=bar');
 ### Installation
 
 ```bash
-npm install --save s-router
+npm install --save s-route
 ```
 
-Using a module bundler such as [rollup](http://rollupjs.org), [webpack](https://webpack.github.io/), or [browserify](http://browserify.org/) you can then import `s-router`.
+Using a module bundler such as [rollup](http://rollupjs.org), [webpack](https://webpack.github.io/), or [browserify](http://browserify.org/) you can then import `s-route`.
 
 ```js
 // if using an es6 transpiler, like babel or buble
-import { Router } from 's-router';
+import { Router } from 's-route';
 ```
 
 ```js
 // if not using an es6 transpiler, use the already-transpiled UMD version instead
-var Router = require('s-router/bundle').Router;
-var setPath = require('s-router/bundle').setPath;
+var Router = require('s-route/bundle').Router;
+var setPath = require('s-route/bundle').setPath;
 ```
 
 A server-side setup that routes all traffic to the same html file will also be required.
@@ -103,7 +103,7 @@ In firebase.json, assuming static files are located in `/public`
 
 ### Defining routes
 
-Routes here do not correspond to specific components as they do in many clientside routers, such as react-router and vue-router. Instead, when the user navigates, `s-router` calls the function associated with each url.
+Routes here do not correspond to specific components as they do in many clientside routers, such as react-router and vue-router. Instead, when the user navigates, `s-route` calls the function associated with each url.
 
 The route map is just an object where the keys are a pattern to match against the url and the values are functions to be called when a matching url has been navigated to.
 
@@ -154,7 +154,7 @@ All route handlers are passed an object of route data with the following propert
 When routing within a single-page application, you should use the provided `setPath` function rather than manually setting `window.location.href` or using other methods that cause a refresh. `setPath('/foo')` will add `/foo` to the browser history and trigger the corresponding route handler without refreshing the page.
 
 ```js
-import { setPath } from 's-router';
+import { setPath } from 's-route';
 
 // after router has been initialized...
 
@@ -165,10 +165,10 @@ button.onclick = () => setPath('/foo');
 
 ### Query string parsing
 
-Support for parsing query strings is not included in `s-router` by default, but can be imported separately.
+Support for parsing query strings is not included in `s-route` by default, but can be imported separately.
 
 ```js
-import parseQueryString from 's-router/querystring';
+import parseQueryString from 's-route/querystring';
 
 // in real code, you would probably get this value from `window.location.search`
 const query = '?foo=bar&baz=qux';
@@ -182,7 +182,7 @@ assert.deepEqual(parseQueryString(query), {
 If the same key is assigned more than one value, it is assumed to be an array.
 
 ```js
-import parseQueryString from 's-router/querystring';
+import parseQueryString from 's-route/querystring';
 
 const query = '?foo=bar&foo=baz';
 
@@ -194,7 +194,7 @@ assert.deepEqual(parseQueryString(query), {
 If the key ends in `[]`, it is also assumed to be an array.
 
 ```js
-import parseQueryString from 's-router/querystring';
+import parseQueryString from 's-route/querystring';
 
 const query = '?foo[]=bar';
 
@@ -206,7 +206,7 @@ assert.deepEqual(parseQueryString(query), {
 All values are assumed to be strings, unless the value is `true` or `false` in which case it is cast to a boolean.
 
 ```js
-import parseQueryString from 's-router/querystring';
+import parseQueryString from 's-route/querystring';
 
 const query = '?foo=true&bar=123';
 
@@ -218,16 +218,16 @@ assert.deepEqual(parseQueryString(query), {
 
 The following nonstandard features are *not* supported:
 
-- nested objects within query strings
-- nested arrays within query strings
-- arrays set using index values (for instance `?foo[0]=bar&foo[1]=baz`)
+- Nested objects within query strings
+- Nested arrays within query strings
+- Arrays set using index values (for instance `?foo[0]=bar&foo[1]=baz`)
 
 
 ### Browser support
 
 The router relies on the [history API](https://developer.mozilla.org/en-US/docs/Web/API/History) which is supported in Internet Explorer versions 10 and above.
 
-The code for the router is written in es6. A transpiled version is available in `s-router/bundle`. For developers using a transpiler anyway (or writing code for es6-ready browsers only), you need only import from `s-router`.
+The code for the router is written in es6. A transpiled version is available in `s-route/bundle`. For developers using a transpiler anyway (or writing code for es6-ready browsers only), you need only import from `s-route`.
 
 ### Demo
 
