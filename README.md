@@ -74,7 +74,7 @@ const app = express();
 // ensure static files can be accessed (these are not handled by the clientside router)
 app.use('/public', express.static(__dirname + '/public'));
 
-// route all requests to index.html
+// route all other GET requests to index.html
 app.get('*', (req, res) => res.sendFile(__dirname + '/index.html'));
 app.listen(process.env.PORT || 3000);
 ```	
@@ -228,3 +228,9 @@ The following nonstandard features are *not* supported:
 The router relies on the [history API](https://developer.mozilla.org/en-US/docs/Web/API/History) which is supported in Internet Explorer versions 10 and above.
 
 The code for the router is written in es6. A transpiled version is available in `s-router/bundle`. For developers using a transpiler anyway (or writing code for es6-ready browsers only), you need only import from `s-router`.
+
+### Demo
+
+A basic demo that allows you to set the route through `setPath` displays a running log of the route data available to route handlers.
+
+[Try it out here](https://fir-router-demo.firebaseapp.com).
