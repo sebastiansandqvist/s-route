@@ -5,7 +5,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 export default {
 	entry: 'index.js',
 	dest: 'bundle.js',
-	moduleName: 's-router',
+	moduleName: 's-route',
 	format: 'umd',
 	plugins: [
 		nodeResolve({ browser: true }),

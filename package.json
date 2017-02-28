@@ -1,5 +1,5 @@
 {
-  "name": "s-router",
+  "name": "s-route",
   "version": "0.1.0",
   "description": "Clientside router",
   "main": "index.js",

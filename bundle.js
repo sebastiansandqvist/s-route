@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global['s-router'] = global['s-router'] || {})));
+	(factory((global['s-route'] = global['s-route'] || {})));
 }(this, (function (exports) { 'use strict';
 
 // NOTE: relies on history API (IE >= 10)
