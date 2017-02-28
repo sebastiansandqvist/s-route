@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sebastiansandqvist/s-router.git"
+    "url": "git+https://github.com/sebastiansandqvist/s-route.git"
   },
   "author": "sebastian sandqvist",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sebastiansandqvist/s-router/issues"
+    "url": "https://github.com/sebastiansandqvist/s-route/issues"
   },
-  "homepage": "https://github.com/sebastiansandqvist/s-router#readme",
+  "homepage": "https://github.com/sebastiansandqvist/s-route#readme",
   "devDependencies": {
     "@seabass/eslint-config": "1.7.0",
     "babel-core": "6.23.1",
